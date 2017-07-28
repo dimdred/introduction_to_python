@@ -98,3 +98,7 @@ import struct
 # экспорт данных
 struct.pack('IH',1,2)
 struct.unpack('IH', buf)
+
+
+
+## Идиомы Python
