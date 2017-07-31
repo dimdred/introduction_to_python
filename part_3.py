@@ -102,3 +102,230 @@ struct.unpack('IH', buf)
 
 
 ## Идиомы Python
+# проверка истиности для множеств
+# if x:
+# if no x:
+# Good!
+name = 'Safe'
+pets = ['Dog', 'Cat', 'Hamster']
+owners = {'Safe': 'Cat', 'George': 'Dog'}
+# определяем есть ли данные в 3 переменных, пустые переменные False a=[]
+if name and pets and owners:
+    print('We have pats!')
+
+# неправильный путь для пайтона!!!
+if name != '' and len(pets) > 0 and owners != {}:
+    print('We have pats!')
+
+# Использование выражений 'in': if x in iyems:
+# GOOD
+name = 'Safe Hammad'
+if 'H' in name:
+    print('This name has an H in it')
+
+# NOT GOOD
+name = 'Safe Hammad'
+if name.find('H') != -1: # find возвращает позиция, если -1 то не найден!
+    print('This name has an H in it')
+
+# for x in items:
+# GOOD
+pets = ['Dog', 'Cat', 'Hamster']
+pet = 'Dog'
+for pet in pets:
+    print('A {} pet can be very cute!'.format(pet))
+pet in pets
+
+
+# Обмен значениями переменных
+a, b = b, a
+
+## Объединение списков в строку:
+# GOOD!
+
+chars = ['S', 'a', 'f', 'e']
+name =''.join(chars)
+print(name)
+name ='-'.join(chars)  # '-' - разделитель!
+print(name)
+
+# NOT GOOD! Медленно!!!
+chars = ['S', 'a', 'f', 'e']
+name = ''
+for char in chars:
+    name += char
+print(name)
+
+## Использовать enumerate: for i, item in enumerate(items):
+# GOOD
+# узнать индекс элемента в массиве
+names = ['Safe', 'George', 'Mildred']
+for i, name in enumerate(names):
+    print(i, name) # 0 Safe, 1 George
+
+# NOT GOOD
+names = ['Safe', 'George', 'Mildred']
+count = 0
+for name in names:
+    print(i, name)
+    count += 1
+
+# Использование генераторов списков
+# GOOD!
+
+data = [5, 7, 3, 11, 15]
+result = [i * 3 for i in data if i > 10] # проверка списка по условию и новый список!
+print(result)
+
+# NOT GOOD!!
+data = [5, 7, 3, 11, 15]
+result = []
+for i in data:
+    if i > 10:
+        result.append(i*3)
+print(result)
+
+# Создание словарей с помощью zip dict(zip(keys,values)
+# GOOD!
+keys = ['Safe', 'Bob', 'Thomas']
+values = ['Hammad', 'Builder', 'Engine']
+d = dict(zip(keys,values))
+print(d)
+
+d.keys() # список ключей
+d.values() # список значений
+
+#NO GOOD!
+keys = ['Safe', 'Bob', 'Thomas']
+values = ['Hammad', 'Builder', 'Engine']
+d = {}
+for i, key in enumerate(keys):
+    d[keys] = values[i]
+print(d)
+
+# Использовать _ для ненужных (отбрасываемых) переменных
+for k, _ in [('a', 1), ('b', 2), ('c', 3)] # когда работаем со списком из 3х элементов и 2ой ненужен!
+
+## Использование dict.get() and dict.setdefault()
+d = {'a': 1, 'b': 2}
+d.get('a')
+d.get('c') # значение None
+d['c'] # вернет ошибку, несуществуюющий индекс
+d.setdefault('c',3) # применять для добавления значений в словарь
+d['c']
+
+## Сортировка списков
+# метод объекта: sort: сортировка на месте
+
+l = [2, 5, 1, 8, 3]
+l.sort()
+l.sort(key=fun) # по умолчанию по мере возрастания, но можно написать свою функцию сравнения# в для объектов
+
+l = [2, 5, 1, 8, 3]
+sorted(l) #функция возвращает отсортированный список не перезаписывая его (временно)
+
+reversed(l) # список не изменный
+list(reversed(l))
+l.reverse() # список перезаписывается
+
+## Документация кода
+# docstring
+def f():
+    '''Description of function!'''
+    pass
+
+help(f) # получим описание функции! поэтому сложные функции нужно описывать!
+
+#sphinx для красивой документации с отчетами
+
+# профилирование и отладка!
+# time
+# вычисляем сколько отработала прога
+import time
+start = time.time()
+time.sleep(4)
+# or do something more productive!
+done = time.time()
+elapsed = done - start
+print(elapsed)
+
+
+# проверка сколько работает алгоритм! (запускает несколько раз и среднее показывает!)
+# timeit
+import timeit
+t1 = timeit.Timer("text='sample string'; char = 'g'; char in text")
+t1.timeit()
+# 0.053
+
+def s(text, char):
+    for c in text:
+        if c == char:
+            return True
+    return False
+t2 = timeit.Timer("s('sample string', 'g')", setup='from __main__ import s')
+t2.timeit()
+# 0.74
+
+# вызов из коммандной строки
+# python -m timeit -s "text = \"sample string\"; char = \"g\"" "char in text"
+
+# profile
+import cProfile
+import re
+cProfile.run('re.compile("foo|bar")')
+
+# отладка: ставим точки прерывания и Debug (IDE)
+
+# pdb используем если нету средств отладки (удаленно на серваке)
+import pdb
+pdb.set_trace()
+
+# debug.py ранать из консоли!
+import pdb; pdb.set_trace()
+
+##  ТЕстирование кода!
+# test.py
+
+import unittest
+
+class TestStringMethods(unittest.TestCase): # класс наследуем от unittest
+    def test_upper(self):
+        self.assertEqual('foo'.upper(), 'FOO')
+
+    def test_isupper(self):
+        self.assertTrue('FOO'.isupper())
+        self.assertTrue('Foo'.isupper())
+
+class TestDummy(unittest.TestCase):
+
+    def test_one(self):
+        self.assertEqual(1, 1)
+
+unittest.main(exit=False)
+
+# unittest.mock
+# можем подменить любой объект в классе!
+
+from unittest.mock import MagicMock
+class ProductionClass():
+    def method(self):
+        pass # заглушка, класс ничего не возвращает
+
+thing = ProductionClass()
+thing.method = MagicMock(return_value=3) # будем возвращать 3 в методе
+thing.method(3, 4, 5, key='value')
+# вернет 3
+
+thing.method.assert_called_with(3, 4, 5, key='value')
+# проверим с какими параметрами вызван метод, если - (3, 4, 4, key='value') то ошибку вернет
+
+# patch
+# заменяет метод в классе! похож на  mock
+with unittest.mock.patch.object(ProductionClass, 'method', return_value=None) as mock_method1:
+    thing = ProductionClass()
+    thing.method(1, 2, 3)
+
+mock_method1.assert_called_once_with(1, 2, 3)
+mock_method1.assert_called_once_with(1, 2, 4)
+
+# patch и mock гибко подменять чтото или проверять правильно ли вызванны объекты. удобно для написания юнит тестов
